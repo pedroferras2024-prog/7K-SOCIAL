@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7K.SOCIAL</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 58px;
+      font-weight: 900;
+      color: #d4af37;
+      letter-spacing: -5px;
+    }
+
+    .social {
+      font-size: 18px;
+      letter-spacing: 6px;
+      margin-top: 5px;
+      color: #fff;
+    }
+
+    .welcome {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      color: #999;
+      font-size: 15px;
+    }
+
+    .buttons {
+      width: 100%;
+      margin-top: 35px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #d4af37;
+      color: #080808;
+    }
+
+    .secondary {
+      background: #171717;
+      color: white;
+      border: 1px solid #333;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      color: #555;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="logo">7K</div>
+    <div class="social">SOCIAL</div>
+
+    <section class="welcome">
+      <h1>Bem-vindo ao 7K.SOCIAL</h1>
+      <p>Conecte-se. Compartilhe. Faça parte.</p>
+    </section>
+
+    <div class="buttons">
+      <button class="primary" onclick="alert('Login em breve')">
+        Entrar
+      </button>
+
+      <button class="secondary" onclick="alert('Cadastro em breve')">
+        Criar conta
+      </button>
+    </div>
+
+    <footer>
+      © 2026 7K.SOCIAL
+    </footer>
+
+  </main>
+
+</body>
+</html>
