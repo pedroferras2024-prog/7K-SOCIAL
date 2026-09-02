@@ -4,127 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>7K.SOCIAL</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background: #080808;
-      color: white;
-      font-family: Arial, sans-serif;
+      margin: 0;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 58px;
-      font-weight: 900;
-      color: #d4af37;
-      letter-spacing: -5px;
-    }
-
-    .social {
-      font-size: 18px;
-      letter-spacing: 6px;
-      margin-top: 5px;
+      background: #000;
       color: #fff;
-    }
-
-    .welcome {
-      margin-top: 50px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
     }
 
-    .welcome h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
+    .container {
+      width: 90%;
+      max-width: 450px;
     }
 
-    .welcome p {
-      color: #999;
-      font-size: 15px;
+    .logo {
+      font-size: 70px;
+      font-weight: 900;
+      color: #d4af37;
+      margin-bottom: 0;
     }
 
-    .buttons {
-      width: 100%;
-      margin-top: 35px;
+    .social {
+      font-size: 24px;
+      letter-spacing: 8px;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+
+    p {
+      color: #aaa;
+      font-size: 17px;
+      margin-bottom: 35px;
     }
 
     button {
       width: 100%;
       padding: 16px;
-      margin-top: 12px;
-      border-radius: 12px;
+      margin: 8px 0;
       border: none;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 17px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .primary {
+    .start {
       background: #d4af37;
-      color: #080808;
+      color: #000;
     }
 
-    .secondary {
-      background: #171717;
-      color: white;
-      border: 1px solid #333;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 20px;
-      color: #555;
-      font-size: 12px;
+    .login {
+      background: #222;
+      color: #fff;
     }
   </style>
 </head>
 
 <body>
-
-  <main class="app">
-
+  <div class="container">
     <div class="logo">7K</div>
     <div class="social">SOCIAL</div>
 
-    <section class="welcome">
-      <h1>Bem-vindo ao 7K.SOCIAL</h1>
-      <p>Conecte-se. Compartilhe. Faça parte.</p>
-    </section>
+    <h1>Bem-vindo ao 7K.SOCIAL</h1>
+    <p>Conecte-se. Compartilhe. Faça parte.</p>
 
-    <div class="buttons">
-      <button class="primary" onclick="alert('Login em breve')">
-        Entrar
-      </button>
-
-      <button class="secondary" onclick="alert('Cadastro em breve')">
-        Criar conta
-      </button>
-    </div>
-
-    <footer>
-      © 2026 7K.SOCIAL
-    </footer>
-
-  </main>
-
+    <button class="start">COMEÇAR</button>
+    <button class="login">ENTRAR</button>
+  </div>
 </body>
 </html>
