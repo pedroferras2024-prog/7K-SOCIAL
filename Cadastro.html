@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Criar conta - 7K.SOCIAL</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -16,6 +21,7 @@
       background: #000;
       color: #fff;
       font-family: Arial, sans-serif;
+
       display: flex;
       justify-content: center;
       align-items: center;
@@ -48,31 +54,76 @@
       width: 100%;
       padding: 15px;
       margin: 8px 0;
+
       border: 1px solid #333;
       border-radius: 10px;
+
       background: #171717;
       color: #fff;
+
       font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #d4af37;
     }
 
     button {
       width: 100%;
       padding: 16px;
       margin-top: 15px;
+
       border: none;
       border-radius: 10px;
+
       background: #d4af37;
       color: #000;
+
       font-size: 17px;
       font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .voltar {
       display: block;
       text-align: center;
       margin-top: 20px;
+
       color: #aaa;
       text-decoration: none;
+    }
+
+    .mensagem {
+      display: none;
+
+      margin-top: 15px;
+      padding: 12px;
+
+      border-radius: 8px;
+
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .erro {
+      display: block;
+      background: #3a0000;
+      color: #ff7070;
+      border: 1px solid #700000;
+    }
+
+    .sucesso {
+      display: block;
+      background: #0b2d12;
+      color: #6cff86;
+      border: 1px solid #176b28;
     }
   </style>
 </head>
@@ -82,26 +133,285 @@
   <div class="container">
 
     <div class="logo">7K</div>
+
     <div class="social">SOCIAL</div>
 
     <h1>Criar conta</h1>
 
-    <input type="text" placeholder="Seu nome">
+    <input
+      type="text"
+      id="nome"
+      placeholder="Seu nome"
+      autocomplete="name"
+    >
 
-    <input type="text" placeholder="@seuusuario">
+    <input
+      type="text"
+      id="usuario"
+      placeholder="@seuusuario"
+      autocomplete="username"
+    >
 
-    <input type="email" placeholder="Seu e-mail">
+    <input
+      type="email"
+      id="email"
+      placeholder="Seu e-mail"
+      autocomplete="email"
+    >
 
-    <input type="password" placeholder="Sua senha">
+    <input
+      type="password"
+      id="senha"
+      placeholder="Sua senha"
+      autocomplete="new-password"
+    >
 
-    <button onclick="criarConta()">CRIAR CONTA</button>
+    <button id="botaoCadastro" onclick="criarConta()">
+      CRIAR CONTA
+    </button>
 
-    <a class="voltar" href="index.html">← Voltar</a>
+    <div id="mensagem" class="mensagem"></div>
+
+    <a class="voltar" href="index.html">
+      ← Voltar
+    </a>
 
   </div>
 
-  
+
+  <script>
+
+    // ==========================================
+    // CONFIGURAÇÃO DO SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL = "https://pnohbfnnnnpxdeqxwtsg.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_axxQbwjydBO6v5OXWbVkBQ_vg_slpRk";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+
+    // ==========================================
+    // FUNÇÃO PARA MOSTRAR MENSAGENS
+    // ==========================================
+
+    function mostrarMensagem(texto, tipo) {
+
+      const mensagem = document.getElementById("mensagem");
+
+      mensagem.textContent = texto;
+
+      mensagem.className = "mensagem " + tipo;
+    }
+
+
+    // ==========================================
+    // CRIAR CONTA
+    // ==========================================
+
+    async function criarConta() {
+
+      const nome = document
+        .getElementById("nome")
+        .value
+        .trim();
+
+      let usuario = document
+        .getElementById("usuario")
+        .value
+        .trim()
+        .toLowerCase();
+
+      const email = document
+        .getElementById("email")
+        .value
+        .trim();
+
+      const senha = document
+        .getElementById("senha")
+        .value;
+
+
+      // Remove @ do começo
+      usuario = usuario.replace(/^@+/, "");
+
+
+      // ==========================================
+      // VALIDAÇÕES
+      // ==========================================
+
+      if (!nome) {
+
+        mostrarMensagem(
+          "Digite seu nome.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      if (!usuario) {
+
+        mostrarMensagem(
+          "Digite seu nome de usuário.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      // Apenas letras, números, ponto e _
+      const usuarioValido =
+        /^[a-zA-Z0-9._]+$/;
+
+      if (!usuarioValido.test(usuario)) {
+
+        mostrarMensagem(
+          "O usuário pode ter apenas letras, números, ponto e _.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      if (!email) {
+
+        mostrarMensagem(
+          "Digite seu e-mail.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      if (!senha || senha.length < 6) {
+
+        mostrarMensagem(
+          "A senha precisa ter pelo menos 6 caracteres.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      const botao =
+        document.getElementById("botaoCadastro");
+
+      botao.disabled = true;
+
+      botao.textContent = "CRIANDO...";
+
+
+      try {
+
+        // ========================================
+        // CRIA USUÁRIO NO SUPABASE AUTH
+        // ========================================
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: senha,
+
+            options: {
+              data: {
+                nome: nome,
+                usuario: usuario
+              }
+            }
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        // ========================================
+        // VERIFICA SE O USUÁRIO FOI CRIADO
+        // ========================================
+
+        if (data.user) {
+
+          mostrarMensagem(
+            "Conta criada com sucesso! Verifique seu e-mail para confirmar a conta.",
+            "sucesso"
+          );
+
+
+          // Limpa formulário
+
+          document.getElementById("nome").value = "";
+          document.getElementById("usuario").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("senha").value = "";
+
+
+          botao.textContent = "CONTA CRIADA";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        let mensagemErro =
+          "Não foi possível criar sua conta.";
+
+
+        if (error.message) {
+
+          if (
+            error.message
+              .toLowerCase()
+              .includes("user already registered")
+          ) {
+
+            mensagemErro =
+              "Este e-mail já está cadastrado.";
+
+          } else {
+
+            mensagemErro =
+              error.message;
+
+          }
+
+        }
+
+
+        mostrarMensagem(
+          mensagemErro,
+          "erro"
+        );
+
+
+        botao.disabled = false;
+
+        botao.textContent = "CRIAR CONTA";
+
+      }
+
+    }
+
   </script>
 
 </body>
+
 </html>
