@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>7K.SOCIAL</title>
 
-    <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -18,53 +18,47 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #080808;
+            background: #050505;
             color: white;
             min-height: 100vh;
         }
 
         header {
-            height: 70px;
-            background: #050505;
-            border-bottom: 1px solid #d4af37;
+            height: 65px;
+            background: #080808;
+            border-bottom: 1px solid #c9a62c;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 25px;
+            padding: 0 18px;
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
         }
 
         .logo {
             color: #d4af37;
-            font-size: 26px;
+            font-size: 23px;
             font-weight: bold;
             letter-spacing: 2px;
         }
 
-        .perfil {
+        .header-buttons {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
 
-        .usuario {
-            color: #ddd;
-            font-size: 14px;
-        }
-
-        .sair {
+        .header-btn {
             background: transparent;
             color: #d4af37;
             border: 1px solid #d4af37;
             border-radius: 8px;
-            padding: 9px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        .sair:hover {
+        .header-btn:hover {
             background: #d4af37;
             color: #000;
         }
@@ -72,157 +66,353 @@
         main {
             width: 100%;
             max-width: 650px;
-            margin: 30px auto;
-            padding: 0 15px;
+            margin: auto;
+            padding: 18px 14px 90px;
         }
 
-        .boasvindas {
-            margin-bottom: 25px;
+        /* STORIES */
+
+        .stories-area {
+            margin-bottom: 20px;
         }
 
-        .boasvindas h1 {
+        .section-title {
             color: #d4af37;
-            font-size: 28px;
-            margin-bottom: 7px;
+            font-weight: bold;
+            margin-bottom: 12px;
         }
 
-        .boasvindas p {
-            color: #aaa;
+        .stories {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
         }
+
+        .stories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story {
+            min-width: 78px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .story-circle {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            margin: auto;
+            border: 2px solid #d4af37;
+            background: #171717;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .story-circle img,
+        .story-circle video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-name {
+            color: #ccc;
+            font-size: 11px;
+            margin-top: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .add-story {
+            border: 2px dashed #d4af37;
+            color: #d4af37;
+            font-size: 25px;
+        }
+
+        /* CARDS */
 
         .card {
             background: #111;
             border: 1px solid #292929;
             border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 17px;
+            margin-bottom: 18px;
         }
 
-        .card h2 {
+        .card-title {
             color: #d4af37;
-            font-size: 19px;
-            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 13px;
         }
 
         textarea {
             width: 100%;
-            min-height: 110px;
-            resize: vertical;
+            min-height: 95px;
             background: #080808;
             color: white;
             border: 1px solid #444;
             border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
+            padding: 13px;
+            resize: vertical;
             outline: none;
+            font-size: 15px;
         }
 
         textarea:focus {
             border-color: #d4af37;
         }
 
-        .publicar {
-            margin-top: 12px;
+        .media-select {
+            margin-top: 10px;
             width: 100%;
+            padding: 12px;
+            background: #080808;
+            color: #ccc;
+            border: 1px solid #444;
+            border-radius: 9px;
+        }
+
+        .file-name {
+            color: #888;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .main-button {
+            width: 100%;
+            margin-top: 12px;
             background: #d4af37;
             color: #000;
             border: none;
             border-radius: 9px;
             padding: 13px;
             font-weight: bold;
-            font-size: 15px;
             cursor: pointer;
         }
 
-        .publicar:hover {
-            background: #f0cf55;
+        .main-button:hover {
+            background: #edcc55;
         }
 
-        .mensagem {
-            margin-top: 12px;
+        .message {
             text-align: center;
-            font-size: 14px;
+            margin-top: 10px;
+            font-size: 13px;
         }
+
+        /* POSTS */
 
         .post {
             background: #111;
             border: 1px solid #292929;
             border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
+            overflow: hidden;
         }
 
-        .post-topo {
+        .post-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            padding: 15px 15px 10px;
         }
 
-        .post-usuario {
+        .post-user {
             color: #d4af37;
             font-weight: bold;
         }
 
-        .post-data {
+        .post-date {
             color: #777;
-            font-size: 12px;
+            font-size: 11px;
         }
 
-        .post-texto {
+        .post-text {
             color: #ddd;
+            padding: 0 15px 14px;
             line-height: 1.5;
             white-space: pre-wrap;
-            word-wrap: break-word;
+            overflow-wrap: anywhere;
         }
 
-        .atualizar {
+        .post-media {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            background: #000;
+            display: block;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            padding: 12px 15px;
+            border-top: 1px solid #222;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            color: #d4af37;
+        }
+
+        .comments {
+            padding: 0 15px 14px;
+        }
+
+        .comment {
+            color: #aaa;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .comment strong {
+            color: #d4af37;
+        }
+
+        .comment-box {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .comment-box input {
+            flex: 1;
+            background: #080808;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 7px;
+            padding: 8px;
+        }
+
+        .comment-box button {
+            background: #d4af37;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 11px;
+            cursor: pointer;
+        }
+
+        /* MENSAGENS */
+
+        .messages-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .messages-header {
+            height: 65px;
+            border-bottom: 1px solid #d4af37;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+        }
+
+        .messages-header h2 {
+            color: #d4af37;
+        }
+
+        .close-btn {
             background: transparent;
             color: #d4af37;
             border: 1px solid #d4af37;
-            padding: 9px 14px;
             border-radius: 8px;
+            padding: 8px 12px;
             cursor: pointer;
-            margin-bottom: 15px;
         }
 
-        .atualizar:hover {
-            background: #d4af37;
-            color: #000;
+        .messages-content {
+            max-width: 650px;
+            margin: auto;
+            padding: 20px 14px;
         }
 
-        .vazio {
+        .conversation {
+            padding: 15px;
+            border: 1px solid #292929;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: #111;
+        }
+
+        .conversation:hover {
+            border-color: #d4af37;
+        }
+
+        .conversation-user {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .conversation-text {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .empty {
             text-align: center;
             color: #777;
-            padding: 25px;
+            padding: 35px 10px;
+        }
+
+        /* STORY MODAL */
+
+        .story-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.92);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .story-view {
+            width: min(430px, 100%);
+            max-height: 90vh;
+            background: #111;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .story-view img,
+        .story-view video {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 10px;
+        }
+
+        .story-view-name {
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         footer {
             text-align: center;
             color: #555;
-            padding: 30px 10px;
+            padding: 20px;
             font-size: 12px;
-        }
-
-        @media (max-width: 600px) {
-            header {
-                padding: 0 15px;
-            }
-
-            .logo {
-                font-size: 21px;
-            }
-
-            .usuario {
-                display: none;
-            }
-
-            main {
-                margin-top: 20px;
-            }
-
-            .boasvindas h1 {
-                font-size: 24px;
-            }
         }
     </style>
 </head>
@@ -231,17 +421,15 @@
 
 <header>
 
-    <div class="logo">
-        7K.SOCIAL
-    </div>
+    <div class="logo">7K.SOCIAL</div>
 
-    <div class="perfil">
+    <div class="header-buttons">
 
-        <span class="usuario" id="usuarioTopo">
-            Carregando...
-        </span>
+        <button class="header-btn" onclick="abrirMensagens()">
+            💬
+        </button>
 
-        <button class="sair" onclick="sair()">
+        <button class="header-btn" onclick="sair()">
             SAIR
         </button>
 
@@ -252,15 +440,44 @@
 
 <main>
 
-    <section class="boasvindas">
+    <!-- STORIES -->
 
-        <h1 id="tituloBoasVindas">
+    <section class="stories-area">
+
+        <div class="section-title">
+            STORIES
+        </div>
+
+        <div class="stories" id="stories">
+
+            <div class="story" onclick="abrirCriarStory()">
+
+                <div class="story-circle add-story">
+                    +
+                </div>
+
+                <div class="story-name">
+                    Seu Story
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BOAS VINDAS -->
+
+    <section class="card">
+
+        <div class="card-title" id="boasVindas">
             Olá! 👋
-        </h1>
+        </div>
 
-        <p>
+        <div style="color:#888;">
             Bem-vindo ao 7K.SOCIAL.
-        </p>
+        </div>
 
     </section>
 
@@ -269,26 +486,36 @@
 
     <section class="card">
 
-        <h2>
+        <div class="card-title">
             Criar publicação
-        </h2>
+        </div>
 
         <textarea
             id="textoPublicacao"
-            maxlength="500"
+            maxlength="1000"
             placeholder="O que você está pensando?"
         ></textarea>
 
+        <input
+            class="media-select"
+            type="file"
+            id="arquivoPublicacao"
+            accept="image/*,video/*"
+            onchange="mostrarArquivo()"
+        >
+
+        <div class="file-name" id="nomeArquivo"></div>
+
         <button
-            class="publicar"
+            class="main-button"
             onclick="publicar()"
         >
             PUBLICAR
         </button>
 
         <div
-            class="mensagem"
-            id="mensagem"
+            class="message"
+            id="mensagemPublicacao"
         ></div>
 
     </section>
@@ -298,16 +525,24 @@
 
     <section>
 
-        <button
-            class="atualizar"
-            onclick="carregarPublicacoes()"
-        >
-            🔄 ATUALIZAR FEED
-        </button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+
+            <div class="section-title">
+                FEED
+            </div>
+
+            <button
+                class="header-btn"
+                onclick="carregarFeed()"
+            >
+                🔄
+            </button>
+
+        </div>
 
         <div id="feed">
 
-            <div class="vazio">
+            <div class="empty">
                 Carregando publicações...
             </div>
 
@@ -319,17 +554,126 @@
 
 
 <footer>
-
     © 2026 7K.SOCIAL
-
 </footer>
+
+
+<!-- MODAL STORY -->
+
+<div
+    class="story-modal"
+    id="storyModal"
+    onclick="fecharStory(event)"
+>
+
+    <div class="story-view">
+
+        <div
+            class="story-view-name"
+            id="storyViewName"
+        ></div>
+
+        <div id="storyViewMedia"></div>
+
+        <button
+            class="close-btn"
+            style="margin-top:12px;"
+            onclick="fecharStory()"
+        >
+            FECHAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL CRIAR STORY -->
+
+<div
+    class="story-modal"
+    id="criarStoryModal"
+>
+
+    <div class="story-view">
+
+        <div class="story-view-name">
+            CRIAR STORY
+        </div>
+
+        <input
+            class="media-select"
+            type="file"
+            id="arquivoStory"
+            accept="image/*,video/*"
+        >
+
+        <button
+            class="main-button"
+            onclick="publicarStory()"
+        >
+            PUBLICAR STORY
+        </button>
+
+        <button
+            class="close-btn"
+            style="margin-top:10px;"
+            onclick="fecharCriarStory()"
+        >
+            CANCELAR
+        </button>
+
+        <div
+            class="message"
+            id="mensagemStory"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- MENSAGENS -->
+
+<div
+    class="messages-panel"
+    id="messagesPanel"
+>
+
+    <div class="messages-header">
+
+        <h2>
+            💬 MENSAGENS
+        </h2>
+
+        <button
+            class="close-btn"
+            onclick="fecharMensagens()"
+        >
+            FECHAR
+        </button>
+
+    </div>
+
+    <div class="messages-content">
+
+        <div
+            id="listaMensagens"
+            class="empty"
+        >
+            Carregando conversas...
+        </div>
+
+    </div>
+
+</div>
 
 
 <script>
 
-    // ==========================================
-    // CONFIGURAÇÃO SUPABASE
-    // ==========================================
+    // =========================================
+    // SUPABASE
+    // =========================================
 
     const SUPABASE_URL =
         "https://pnohbfnnnnpxdeqxwtsg.supabase.co";
@@ -344,14 +688,14 @@
         );
 
 
-    // ==========================================
-    // USUÁRIO LOGADO
-    // ==========================================
-
     let usuarioAtual = null;
 
 
-    async function verificarUsuario() {
+    // =========================================
+    // INICIAR
+    // =========================================
+
+    async function iniciar() {
 
         const {
             data,
@@ -360,75 +704,84 @@
 
         if (error || !data.user) {
 
-            window.location.href = "./Login.html";
+            window.location.href =
+                "./Login.html";
 
             return;
         }
 
         usuarioAtual = data.user;
 
-        const metadata = data.user.user_metadata || {};
+        const metadata =
+            usuarioAtual.user_metadata || {};
 
         const nome =
             metadata.nome ||
-            data.user.email ||
+            usuarioAtual.email ||
             "Usuário";
 
-        const usuario =
-            metadata.usuario ||
-            data.user.email;
-
         document.getElementById(
-            "tituloBoasVindas"
+            "boasVindas"
         ).textContent =
             "Olá, " + nome + "! 👋";
 
-        document.getElementById(
-            "usuarioTopo"
-        ).textContent =
-            "@" + usuario;
 
-        carregarPublicacoes();
+        carregarFeed();
+        carregarStories();
+
     }
 
 
-    // ==========================================
+    // =========================================
+    // ARQUIVO DA PUBLICAÇÃO
+    // =========================================
+
+    function mostrarArquivo() {
+
+        const arquivo =
+            document.getElementById(
+                "arquivoPublicacao"
+            ).files[0];
+
+        document.getElementById(
+            "nomeArquivo"
+        ).textContent =
+            arquivo
+                ? "Arquivo: " + arquivo.name
+                : "";
+
+    }
+
+
+    // =========================================
     // PUBLICAR
-    // ==========================================
+    // =========================================
 
     async function publicar() {
 
-        const textarea =
+        const texto =
             document.getElementById(
                 "textoPublicacao"
-            );
+            ).value.trim();
 
-        const texto =
-            textarea.value.trim();
+        const arquivo =
+            document.getElementById(
+                "arquivoPublicacao"
+            ).files[0];
 
         const mensagem =
             document.getElementById(
-                "mensagem"
+                "mensagemPublicacao"
             );
 
 
-        if (!texto) {
+        if (!texto && !arquivo) {
 
             mensagem.textContent =
-                "Escreva alguma coisa antes de publicar.";
+                "Escreva algo ou escolha uma foto/vídeo.";
 
-            mensagem.style.color = "#ff7777";
-
-            return;
-        }
-
-
-        if (!usuarioAtual) {
-
-            mensagem.textContent =
-                "Usuário não encontrado.";
-
-            mensagem.style.color = "#ff7777";
+            mensagem.style.color =
+                "#ff7777";
 
             return;
         }
@@ -441,25 +794,82 @@
             "#d4af37";
 
 
-        /*
-         * IMPORTANTE:
-         *
-         * Esta parte usa uma tabela chamada
-         * "publicacoes" no Supabase.
-         *
-         * Se ela ainda não existir, o feed
-         * mostrará um erro até criarmos a tabela.
-         */
+        let mediaUrl = null;
+        let mediaTipo = null;
+
+
+        // Upload do arquivo
+
+        if (arquivo) {
+
+            const extensao =
+                arquivo.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+            const nomeArquivo =
+                usuarioAtual.id +
+                "/" +
+                Date.now() +
+                "." +
+                extensao;
+
+
+            const {
+                error: uploadError
+            } = await supabaseClient
+                .storage
+                .from("social-media")
+                .upload(
+                    nomeArquivo,
+                    arquivo
+                );
+
+
+            if (uploadError) {
+
+                console.error(uploadError);
+
+                mensagem.textContent =
+                    "Erro ao enviar o arquivo. Verifique o Storage do Supabase.";
+
+                mensagem.style.color =
+                    "#ff7777";
+
+                return;
+            }
+
+
+            const {
+                data: urlData
+            } =
+                supabaseClient
+                    .storage
+                    .from("social-media")
+                    .getPublicUrl(
+                        nomeArquivo
+                    );
+
+
+            mediaUrl =
+                urlData.publicUrl;
+
+
+            mediaTipo =
+                arquivo.type.startsWith("video/")
+                    ? "video"
+                    : "image";
+        }
+
 
         const metadata =
             usuarioAtual.user_metadata || {};
-
 
         const nome =
             metadata.nome ||
             usuarioAtual.email ||
             "Usuário";
-
 
         const usuario =
             metadata.usuario ||
@@ -482,7 +892,13 @@
                     usuario,
 
                 texto:
-                    texto
+                    texto,
+
+                media_url:
+                    mediaUrl,
+
+                media_tipo:
+                    mediaTipo
 
             });
 
@@ -492,7 +908,7 @@
             console.error(error);
 
             mensagem.textContent =
-                "Erro ao publicar.";
+                "Erro ao publicar. Verifique a tabela publicacoes.";
 
             mensagem.style.color =
                 "#ff7777";
@@ -501,16 +917,27 @@
         }
 
 
-        textarea.value = "";
+        document.getElementById(
+            "textoPublicacao"
+        ).value = "";
+
+        document.getElementById(
+            "arquivoPublicacao"
+        ).value = "";
+
+        document.getElementById(
+            "nomeArquivo"
+        ).textContent = "";
+
 
         mensagem.textContent =
-            "Publicado com sucesso!";
+            "Publicado! 🚀";
 
         mensagem.style.color =
             "#d4af37";
 
 
-        carregarPublicacoes();
+        carregarFeed();
 
 
         setTimeout(() => {
@@ -522,20 +949,16 @@
     }
 
 
-    // ==========================================
-    // CARREGAR PUBLICAÇÕES
-    // ==========================================
+    // =========================================
+    // FEED
+    // =========================================
 
-    async function carregarPublicacoes() {
+    async function carregarFeed() {
 
         const feed =
             document.getElementById(
                 "feed"
             );
-
-
-        feed.innerHTML =
-            '<div class="vazio">Carregando...</div>';
 
 
         const {
@@ -544,9 +967,12 @@
         } = await supabaseClient
             .from("publicacoes")
             .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
         if (error) {
@@ -554,8 +980,8 @@
             console.error(error);
 
             feed.innerHTML = `
-                <div class="vazio">
-                    Ainda não foi possível carregar o feed.
+                <div class="empty">
+                    Não foi possível carregar o feed.
                 </div>
             `;
 
@@ -566,9 +992,8 @@
         if (!data || data.length === 0) {
 
             feed.innerHTML = `
-                <div class="vazio">
-                    Nenhuma publicação ainda.<br>
-                    Seja o primeiro a publicar! 🚀
+                <div class="empty">
+                    Ainda não existem publicações.
                 </div>
             `;
 
@@ -581,99 +1006,5 @@
 
         data.forEach(post => {
 
-            const elemento =
-                document.createElement(
-                    "article"
-                );
-
-            elemento.className =
-                "post";
-
-
-            const dataPost =
-                post.created_at
-                    ? new Date(
-                        post.created_at
-                    ).toLocaleString(
-                        "pt-BR"
-                    )
-                    : "";
-
-
-            elemento.innerHTML = `
-
-                <div class="post-topo">
-
-                    <span class="post-usuario">
-                        @${escapeHTML(
-                            post.usuario ||
-                            "usuario"
-                        )}
-                    </span>
-
-                    <span class="post-data">
-                        ${dataPost}
-                    </span>
-
-                </div>
-
-                <div class="post-texto">
-                    ${escapeHTML(
-                        post.texto || ""
-                    )}
-                </div>
-
-            `;
-
-
-            feed.appendChild(
-                elemento
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // PROTEÇÃO CONTRA HTML NO POST
-    // ==========================================
-
-    function escapeHTML(texto) {
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-        div.textContent =
-            texto;
-
-        return div.innerHTML;
-    }
-
-
-    // ==========================================
-    // SAIR
-    // ==========================================
-
-    async function sair() {
-
-        await supabaseClient.auth.signOut();
-
-        window.location.href =
-            "./Login.html";
-
-    }
-
-
-    // ==========================================
-    // INICIAR
-    // ==========================================
-
-    verificarUsuario();
-
-</script>
-
-</body>
-  </html>
+            const article =
+          
