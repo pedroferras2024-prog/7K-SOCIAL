@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>7K.SOCIAL</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #080808;
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            height: 70px;
+            background: #050505;
+            border-bottom: 1px solid #d4af37;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            color: #d4af37;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .perfil {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .usuario {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .sair {
+            background: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 9px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .sair:hover {
+            background: #d4af37;
+            color: #000;
+        }
+
+        main {
+            width: 100%;
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .boasvindas {
+            margin-bottom: 25px;
+        }
+
+        .boasvindas h1 {
+            color: #d4af37;
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .boasvindas p {
+            color: #aaa;
+        }
+
+        .card {
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #d4af37;
+            font-size: 19px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            background: #080808;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #d4af37;
+        }
+
+        .publicar {
+            margin-top: 12px;
+            width: 100%;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 9px;
+            padding: 13px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .publicar:hover {
+            background: #f0cf55;
+        }
+
+        .mensagem {
+            margin-top: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .post {
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .post-topo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .post-usuario {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .post-data {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .post-texto {
+            color: #ddd;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .atualizar {
+            background: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .atualizar:hover {
+            background: #d4af37;
+            color: #000;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #777;
+            padding: 25px;
+        }
+
+        footer {
+            text-align: center;
+            color: #555;
+            padding: 30px 10px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 0 15px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .usuario {
+                display: none;
+            }
+
+            main {
+                margin-top: 20px;
+            }
+
+            .boasvindas h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        7K.SOCIAL
+    </div>
+
+    <div class="perfil">
+
+        <span class="usuario" id="usuarioTopo">
+            Carregando...
+        </span>
+
+        <button class="sair" onclick="sair()">
+            SAIR
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="boasvindas">
+
+        <h1 id="tituloBoasVindas">
+            Olá! 👋
+        </h1>
+
+        <p>
+            Bem-vindo ao 7K.SOCIAL.
+        </p>
+
+    </section>
+
+
+    <!-- CRIAR PUBLICAÇÃO -->
+
+    <section class="card">
+
+        <h2>
+            Criar publicação
+        </h2>
+
+        <textarea
+            id="textoPublicacao"
+            maxlength="500"
+            placeholder="O que você está pensando?"
+        ></textarea>
+
+        <button
+            class="publicar"
+            onclick="publicar()"
+        >
+            PUBLICAR
+        </button>
+
+        <div
+            class="mensagem"
+            id="mensagem"
+        ></div>
+
+    </section>
+
+
+    <!-- FEED -->
+
+    <section>
+
+        <button
+            class="atualizar"
+            onclick="carregarPublicacoes()"
+        >
+            🔄 ATUALIZAR FEED
+        </button>
+
+        <div id="feed">
+
+            <div class="vazio">
+                Carregando publicações...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    © 2026 7K.SOCIAL
+
+</footer>
+
+
+<script>
+
+    // ==========================================
+    // CONFIGURAÇÃO SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL =
+        "https://pnohbfnnnnpxdeqxwtsg.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+        "sb_publishable_axxQbwjydBO6v5OXWbVkBQ_vg_slpRk";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    // ==========================================
+    // USUÁRIO LOGADO
+    // ==========================================
+
+    let usuarioAtual = null;
+
+
+    async function verificarUsuario() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getUser();
+
+        if (error || !data.user) {
+
+            window.location.href = "./Login.html";
+
+            return;
+        }
+
+        usuarioAtual = data.user;
+
+        const metadata = data.user.user_metadata || {};
+
+        const nome =
+            metadata.nome ||
+            data.user.email ||
+            "Usuário";
+
+        const usuario =
+            metadata.usuario ||
+            data.user.email;
+
+        document.getElementById(
+            "tituloBoasVindas"
+        ).textContent =
+            "Olá, " + nome + "! 👋";
+
+        document.getElementById(
+            "usuarioTopo"
+        ).textContent =
+            "@" + usuario;
+
+        carregarPublicacoes();
+    }
+
+
+    // ==========================================
+    // PUBLICAR
+    // ==========================================
+
+    async function publicar() {
+
+        const textarea =
+            document.getElementById(
+                "textoPublicacao"
+            );
+
+        const texto =
+            textarea.value.trim();
+
+        const mensagem =
+            document.getElementById(
+                "mensagem"
+            );
+
+
+        if (!texto) {
+
+            mensagem.textContent =
+                "Escreva alguma coisa antes de publicar.";
+
+            mensagem.style.color = "#ff7777";
+
+            return;
+        }
+
+
+        if (!usuarioAtual) {
+
+            mensagem.textContent =
+                "Usuário não encontrado.";
+
+            mensagem.style.color = "#ff7777";
+
+            return;
+        }
+
+
+        mensagem.textContent =
+            "Publicando...";
+
+        mensagem.style.color =
+            "#d4af37";
+
+
+        /*
+         * IMPORTANTE:
+         *
+         * Esta parte usa uma tabela chamada
+         * "publicacoes" no Supabase.
+         *
+         * Se ela ainda não existir, o feed
+         * mostrará um erro até criarmos a tabela.
+         */
+
+        const metadata =
+            usuarioAtual.user_metadata || {};
+
+
+        const nome =
+            metadata.nome ||
+            usuarioAtual.email ||
+            "Usuário";
+
+
+        const usuario =
+            metadata.usuario ||
+            usuarioAtual.email;
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("publicacoes")
+            .insert({
+
+                usuario_id:
+                    usuarioAtual.id,
+
+                nome:
+                    nome,
+
+                usuario:
+                    usuario,
+
+                texto:
+                    texto
+
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            mensagem.textContent =
+                "Erro ao publicar.";
+
+            mensagem.style.color =
+                "#ff7777";
+
+            return;
+        }
+
+
+        textarea.value = "";
+
+        mensagem.textContent =
+            "Publicado com sucesso!";
+
+        mensagem.style.color =
+            "#d4af37";
+
+
+        carregarPublicacoes();
+
+
+        setTimeout(() => {
+
+            mensagem.textContent = "";
+
+        }, 3000);
+
+    }
+
+
+    // ==========================================
+    // CARREGAR PUBLICAÇÕES
+    // ==========================================
+
+    async function carregarPublicacoes() {
+
+        const feed =
+            document.getElementById(
+                "feed"
+            );
+
+
+        feed.innerHTML =
+            '<div class="vazio">Carregando...</div>';
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("publicacoes")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            feed.innerHTML = `
+                <div class="vazio">
+                    Ainda não foi possível carregar o feed.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            feed.innerHTML = `
+                <div class="vazio">
+                    Nenhuma publicação ainda.<br>
+                    Seja o primeiro a publicar! 🚀
+                </div>
+            `;
+
+            return;
+        }
+
+
+        feed.innerHTML = "";
+
+
+        data.forEach(post => {
+
+            const elemento =
+                document.createElement(
+                    "article"
+                );
+
+            elemento.className =
+                "post";
+
+
+            const dataPost =
+                post.created_at
+                    ? new Date(
+                        post.created_at
+                    ).toLocaleString(
+                        "pt-BR"
+                    )
+                    : "";
+
+
+            elemento.innerHTML = `
+
+                <div class="post-topo">
+
+                    <span class="post-usuario">
+                        @${escapeHTML(
+                            post.usuario ||
+                            "usuario"
+                        )}
+                    </span>
+
+                    <span class="post-data">
+                        ${dataPost}
+                    </span>
+
+                </div>
+
+                <div class="post-texto">
+                    ${escapeHTML(
+                        post.texto || ""
+                    )}
+                </div>
+
+            `;
+
+
+            feed.appendChild(
+                elemento
+            );
+
+        });
+
+    }
+
+
+    // ==========================================
+    // PROTEÇÃO CONTRA HTML NO POST
+    // ==========================================
+
+    function escapeHTML(texto) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.textContent =
+            texto;
+
+        return div.innerHTML;
+    }
+
+
+    // ==========================================
+    // SAIR
+    // ==========================================
+
+    async function sair() {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href =
+            "./Login.html";
+
+    }
+
+
+    // ==========================================
+    // INICIAR
+    // ==========================================
+
+    verificarUsuario();
+
+</script>
+
+</body>
+  </html>
