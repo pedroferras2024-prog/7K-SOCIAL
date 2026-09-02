@@ -69,35 +69,43 @@
       border-color: #d4af37;
     }
 
+    /* Área da senha */
     .senha-container {
       position: relative;
+      width: 100%;
     }
 
     .senha-container input {
       padding-right: 55px;
     }
 
+    /* Botão do olho */
     .mostrar-senha {
       position: absolute;
-      right: 15px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
 
+      width: 45px;
+      height: 45px;
+
+      padding: 0;
+      margin: 0;
+
       background: transparent;
-      border: none;
       color: #aaa;
 
-      cursor: pointer;
+      border: none;
+
       font-size: 20px;
-      padding: 5px;
-      width: auto;
-      margin: 0;
+      cursor: pointer;
     }
 
     .mostrar-senha:hover {
       color: #d4af37;
     }
 
+    /* Botão entrar */
     .login-button {
       width: 100%;
       padding: 16px;
@@ -120,19 +128,7 @@
       cursor: not-allowed;
     }
 
-    .cadastro {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-
-      color: #aaa;
-      text-decoration: none;
-    }
-
-    .cadastro:hover {
-      color: #d4af37;
-    }
-
+    /* Mensagens */
     .mensagem {
       display: none;
 
@@ -158,6 +154,20 @@
       color: #6cff86;
       border: 1px solid #176b28;
     }
+
+    /* Links */
+    .link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      color: #d4af37;
+    }
   </style>
 </head>
 
@@ -171,7 +181,7 @@
 
     <h1>Entrar</h1>
 
-    <!-- E-mail -->
+    <!-- E-MAIL -->
     <input
       type="email"
       id="email"
@@ -179,7 +189,7 @@
       autocomplete="email"
     >
 
-    <!-- Senha -->
+    <!-- SENHA -->
     <div class="senha-container">
 
       <input
@@ -189,35 +199,44 @@
         autocomplete="current-password"
       >
 
-    <button
-  type="button"
-  id="mostrarSenha"
-  class="mostrar-senha"
->
-  👁️
-</button>  
+      <button
+        type="button"
+        id="mostrarSenha"
+        class="mostrar-senha"
+        aria-label="Mostrar senha"
+      >
+        👁️
+      </button>
 
     </div>
 
-    <!-- Botão -->
+    <!-- BOTÃO ENTRAR -->
     <button
       type="button"
-      class="login-button"
       id="botaoLogin"
-      onclick="entrar()"
+      class="login-button"
     >
       ENTRAR
     </button>
 
-    <!-- Mensagem -->
-    <div id="mensagem" class="mensagem"></div>
+    <!-- MENSAGEM -->
+    <div
+      id="mensagem"
+      class="mensagem"
+    ></div>
 
-    <!-- Cadastro -->
-    <a class="cadastro" href="./Cadastro.html">
+    <!-- LINKS -->
+    <a
+      class="link"
+      href="./Cadastro.html"
+    >
       Ainda não tem uma conta? Criar conta
     </a>
 
-    <a class="cadastro" href="./index.html">
+    <a
+      class="link"
+      href="./index.html"
+    >
       ← Voltar
     </a>
 
@@ -227,7 +246,7 @@
   <script>
 
     // ==========================================
-    // CONFIGURAÇÃO DO SUPABASE
+    // SUPABASE
     // ==========================================
 
     const SUPABASE_URL =
@@ -244,13 +263,30 @@
 
 
     // ==========================================
+    // ELEMENTOS DA PÁGINA
+    // ==========================================
+
+    const emailInput =
+      document.getElementById("email");
+
+    const senhaInput =
+      document.getElementById("senha");
+
+    const botaoLogin =
+      document.getElementById("botaoLogin");
+
+    const mensagem =
+      document.getElementById("mensagem");
+
+    const mostrarSenha =
+      document.getElementById("mostrarSenha");
+
+
+    // ==========================================
     // MOSTRAR MENSAGEM
     // ==========================================
 
     function mostrarMensagem(texto, tipo) {
-
-      const mensagem =
-        document.getElementById("mensagem");
 
       mensagem.textContent = texto;
 
@@ -260,67 +296,56 @@
 
 
     // ==========================================
-    // MOSTRAR / OCULTAR SENHA
+    // MOSTRAR / ESCONDER SENHA
     // ==========================================
 
-    function mostrarOcultarSenha() {
+    mostrarSenha.addEventListener(
+      "click",
+      function () {
 
-      const senha =
-        document.getElementById("senha");
+        if (senhaInput.type === "password") {
 
-      const botao =
-        document.getElementById("mostrarSenha");
+          senhaInput.type = "text";
 
-      if (senha.type === "password") {
+          mostrarSenha.textContent = "🙈";
 
-        senha.type = "text";
+          mostrarSenha.setAttribute(
+            "aria-label",
+            "Esconder senha"
+          );
 
-        botao.textContent = "🙈";
+        } else {
 
-      } else {
+          senhaInput.type = "password";
 
-        senha.type = "password";
+          mostrarSenha.textContent = "👁️";
 
-        botao.textContent = "👁️";
+          mostrarSenha.setAttribute(
+            "aria-label",
+            "Mostrar senha"
+          );
+
+        }
+
       }
-    }
+    );
 
 
     // ==========================================
-    // LOGIN
+    // FUNÇÃO DE LOGIN
     // ==========================================
 
     async function entrar() {
 
       const email =
-        document
-          .getElementById("email")
-          .value
-          .trim();
+        emailInput.value.trim();
 
       const senha =
-        document
-          .getElementById("senha")
-          .value;
-.login {
-  display: block;
-  width: 100%;
-  padding: 16px;
-  margin: 8px 0;
+        senhaInput.value;
 
-  border-radius: 10px;
-  background: #222;
-  color: #fff;
-
-  font-size: 17px;
-  font-weight: bold;
-  text-decoration: none;
-
-  box-sizing: border-box;
-}
 
       // ========================================
-      // VALIDAÇÕES
+      // VERIFICAÇÕES
       // ========================================
 
       if (!email) {
@@ -329,6 +354,8 @@
           "Digite seu e-mail.",
           "erro"
         );
+
+        emailInput.focus();
 
         return;
       }
@@ -341,16 +368,20 @@
           "erro"
         );
 
+        senhaInput.focus();
+
         return;
       }
 
 
-      const botao =
-        document.getElementById("botaoLogin");
+      // ========================================
+      // DESATIVA BOTÃO
+      // ========================================
 
-      botao.disabled = true;
+      botaoLogin.disabled = true;
 
-      botao.textContent = "ENTRANDO...";
+      botaoLogin.textContent =
+        "ENTRANDO...";
 
 
       try {
@@ -359,7 +390,7 @@
         // LOGIN NO SUPABASE
         // ======================================
 
-        const { data, error } =
+        const resultado =
           await supabaseClient.auth.signInWithPassword({
 
             email: email,
@@ -369,10 +400,23 @@
           });
 
 
+        const data = resultado.data;
+
+        const error = resultado.error;
+
+
+        // ======================================
+        // ERRO
+        // ======================================
+
         if (error) {
 
-          throw error;
+          console.error(
+            "Erro no login:",
+            error
+          );
 
+          throw error;
         }
 
 
@@ -380,25 +424,32 @@
         // LOGIN REALIZADO
         // ======================================
 
-        if (data.user) {
+        if (data && data.user) {
 
           mostrarMensagem(
-            "Login realizado com sucesso!",
+            "Login realizado com sucesso! 🎉",
             "sucesso"
           );
 
-          botao.textContent = "ENTROU!";
+          botaoLogin.textContent =
+            "ENTROU!";
 
 
-          // ====================================
-          // REDIRECIONAMENTO
-          // ====================================
+          // Guarda os dados da sessão
+          // automaticamente pelo Supabase
 
           setTimeout(function () {
 
-            window.location.href = "./index.html";
+            window.location.href =
+              "./Home.html";
 
           }, 1000);
+
+        } else {
+
+          throw new Error(
+            "Não foi possível iniciar a sessão."
+          );
 
         }
 
@@ -411,31 +462,43 @@
           "Não foi possível entrar.";
 
 
-        if (error.message) {
+        const textoErro =
+          error.message
+            ? error.message.toLowerCase()
+            : "";
 
-          const erro =
-            error.message.toLowerCase();
+
+        // E-mail ou senha incorretos
+        if (
+          textoErro.includes(
+            "invalid login credentials"
+          )
+        ) {
+
+          mensagemErro =
+            "E-mail ou senha incorretos.";
+
+        }
 
 
-          if (
-            erro.includes("invalid login credentials")
-          ) {
+        // E-mail ainda não confirmado
+        else if (
+          textoErro.includes(
+            "email not confirmed"
+          )
+        ) {
 
-            mensagemErro =
-              "E-mail ou senha incorretos.";
+          mensagemErro =
+            "Confirme seu e-mail antes de entrar.";
 
-          } else if (
-            erro.includes("email not confirmed")
-          ) {
+        }
 
-            mensagemErro =
-              "Confirme seu e-mail antes de entrar.";
 
-          } else {
+        // Outros erros
+        else if (error.message) {
 
-            mensagemErro =
-              error.message;
-          }
+          mensagemErro =
+            error.message;
 
         }
 
@@ -446,9 +509,10 @@
         );
 
 
-        botao.disabled = false;
+        botaoLogin.disabled = false;
 
-        botao.textContent = "ENTRAR";
+        botaoLogin.textContent =
+          "ENTRAR";
 
       }
 
@@ -456,12 +520,22 @@
 
 
     // ==========================================
-    // ENTER PARA FAZER LOGIN
+    // CLIQUE NO BOTÃO
+    // ==========================================
+
+    botaoLogin.addEventListener(
+      "click",
+      entrar
+    );
+
+
+    // ==========================================
+    // APERTAR ENTER PARA ENTRAR
     // ==========================================
 
     document.addEventListener(
       "keydown",
-      function(event) {
+      function (event) {
 
         if (event.key === "Enter") {
 
