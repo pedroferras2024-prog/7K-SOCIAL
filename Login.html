@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Entrar - 7K.SOCIAL</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 420px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 55px;
+      font-weight: 900;
+      color: #d4af37;
+    }
+
+    .social {
+      text-align: center;
+      letter-spacing: 7px;
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin: 8px 0;
+
+      border: 1px solid #333;
+      border-radius: 10px;
+
+      background: #171717;
+      color: #fff;
+
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #d4af37;
+    }
+
+    .senha-container {
+      position: relative;
+    }
+
+    .senha-container input {
+      padding-right: 55px;
+    }
+
+    .mostrar-senha {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      background: transparent;
+      border: none;
+      color: #aaa;
+
+      cursor: pointer;
+      font-size: 20px;
+      padding: 5px;
+      width: auto;
+      margin: 0;
+    }
+
+    .mostrar-senha:hover {
+      color: #d4af37;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 15px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: #d4af37;
+      color: #000;
+
+      font-size: 17px;
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .cadastro {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .cadastro:hover {
+      color: #d4af37;
+    }
+
+    .mensagem {
+      display: none;
+
+      margin-top: 15px;
+      padding: 12px;
+
+      border-radius: 8px;
+
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .erro {
+      display: block;
+      background: #3a0000;
+      color: #ff7070;
+      border: 1px solid #700000;
+    }
+
+    .sucesso {
+      display: block;
+      background: #0b2d12;
+      color: #6cff86;
+      border: 1px solid #176b28;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">7K</div>
+
+    <div class="social">SOCIAL</div>
+
+    <h1>Entrar</h1>
+
+    <!-- E-mail -->
+    <input
+      type="email"
+      id="email"
+      placeholder="Seu e-mail"
+      autocomplete="email"
+    >
+
+    <!-- Senha -->
+    <div class="senha-container">
+
+      <input
+        type="password"
+        id="senha"
+        placeholder="Sua senha"
+        autocomplete="current-password"
+      >
+
+      <button
+        type="button"
+        class="mostrar-senha"
+        id="mostrarSenha"
+        onclick="mostrarOcultarSenha()"
+        aria-label="Mostrar senha"
+      >
+        👁️
+      </button>
+
+    </div>
+
+    <!-- Botão -->
+    <button
+      type="button"
+      class="login-button"
+      id="botaoLogin"
+      onclick="entrar()"
+    >
+      ENTRAR
+    </button>
+
+    <!-- Mensagem -->
+    <div id="mensagem" class="mensagem"></div>
+
+    <!-- Cadastro -->
+    <a class="cadastro" href="./Cadastro.html">
+      Ainda não tem uma conta? Criar conta
+    </a>
+
+    <a class="cadastro" href="./index.html">
+      ← Voltar
+    </a>
+
+  </div>
+
+
+  <script>
+
+    // ==========================================
+    // CONFIGURAÇÃO DO SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://pnohbfnnnnpxdeqxwtsg.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_axxQbwjydBO6v5OXWbVkBQ_vg_slpRk";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+
+    // ==========================================
+    // MOSTRAR MENSAGEM
+    // ==========================================
+
+    function mostrarMensagem(texto, tipo) {
+
+      const mensagem =
+        document.getElementById("mensagem");
+
+      mensagem.textContent = texto;
+
+      mensagem.className =
+        "mensagem " + tipo;
+    }
+
+
+    // ==========================================
+    // MOSTRAR / OCULTAR SENHA
+    // ==========================================
+
+    function mostrarOcultarSenha() {
+
+      const senha =
+        document.getElementById("senha");
+
+      const botao =
+        document.getElementById("mostrarSenha");
+
+      if (senha.type === "password") {
+
+        senha.type = "text";
+
+        botao.textContent = "🙈";
+
+      } else {
+
+        senha.type = "password";
+
+        botao.textContent = "👁️";
+      }
+    }
+
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
+
+    async function entrar() {
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+      const senha =
+        document
+          .getElementById("senha")
+          .value;
+
+
+      // ========================================
+      // VALIDAÇÕES
+      // ========================================
+
+      if (!email) {
+
+        mostrarMensagem(
+          "Digite seu e-mail.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      if (!senha) {
+
+        mostrarMensagem(
+          "Digite sua senha.",
+          "erro"
+        );
+
+        return;
+      }
+
+
+      const botao =
+        document.getElementById("botaoLogin");
+
+      botao.disabled = true;
+
+      botao.textContent = "ENTRANDO...";
+
+
+      try {
+
+        // ======================================
+        // LOGIN NO SUPABASE
+        // ======================================
+
+        const { data, error } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: senha
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        // ======================================
+        // LOGIN REALIZADO
+        // ======================================
+
+        if (data.user) {
+
+          mostrarMensagem(
+            "Login realizado com sucesso!",
+            "sucesso"
+          );
+
+          botao.textContent = "ENTROU!";
+
+
+          // ====================================
+          // REDIRECIONAMENTO
+          // ====================================
+
+          setTimeout(function () {
+
+            window.location.href = "./index.html";
+
+          }, 1000);
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        let mensagemErro =
+          "Não foi possível entrar.";
+
+
+        if (error.message) {
+
+          const erro =
+            error.message.toLowerCase();
+
+
+          if (
+            erro.includes("invalid login credentials")
+          ) {
+
+            mensagemErro =
+              "E-mail ou senha incorretos.";
+
+          } else if (
+            erro.includes("email not confirmed")
+          ) {
+
+            mensagemErro =
+              "Confirme seu e-mail antes de entrar.";
+
+          } else {
+
+            mensagemErro =
+              error.message;
+          }
+
+        }
+
+
+        mostrarMensagem(
+          mensagemErro,
+          "erro"
+        );
+
+
+        botao.disabled = false;
+
+        botao.textContent = "ENTRAR";
+
+      }
+
+    }
+
+
+    // ==========================================
+    // ENTER PARA FAZER LOGIN
+    // ==========================================
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+
+          entrar();
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
